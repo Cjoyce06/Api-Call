@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var facts = [String]()
+    @State private var showingAlert = false
     var body: some View {
         NavigationView {
             List(facts, id: \.self) { fact in
@@ -23,6 +24,11 @@ struct ContentView: View {
                 }, label: {
                     Image(systemName: "arrow.clockwise")
                 })
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Loading Error"),
+                          message: Text("There was a problem loading the API categories"),
+                          dismissButton: .default(Text("OK")))
+                }
             }
         }
         .task {
@@ -39,6 +45,7 @@ struct ContentView: View {
                 }
             }
         }
+        showingAlert = true
     }
 }
 
